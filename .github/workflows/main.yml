@@ -7,6 +7,10 @@ on:
   push:
     branches:
       - main
+  schedule:
+    - cron: '0 0 * * *'
+  repository_dispatch:
+    types: [contentful.deploy]
 
 jobs:
   lint:
@@ -45,3 +49,20 @@ jobs:
       - name: Executar prettier
         run: npm run prettier
 
+  jest:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.12.1
+
+      - name: Instalar dependências
+        run: npm install
+
+      - name: Executar jest
+        run: npm test
