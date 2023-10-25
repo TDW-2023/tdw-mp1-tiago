@@ -7,6 +7,10 @@ on:
   push:
     branches:
       - main
+  schedule:
+    - cron: '0 0 * * 1-7'
+  repository_dispatch:
+    types: [contentful.deploy]
 
 jobs:
   lint:
