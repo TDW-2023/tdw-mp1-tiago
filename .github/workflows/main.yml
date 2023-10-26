@@ -66,3 +66,29 @@ jobs:
 
       - name: Executar jest
         run: npm test
+
+  build-deploy:
+    needs:
+      - jest
+      - prettier
+      - lint
+    runs-on: ubuntu-latest
+    if: success()
+
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.12.1
+
+      - name: Instalar dependências
+        run: npm install
+
+      - name: Executar build
+        run: npm run build
+
+      - name: Executar deploy
+        run: npx netlify-cli deploy --site ${{ secrets.NETLIFY_SITE_ID }} --auth ${{ secrets.NETLIFY_AUTH_TOKEN }} --prod
