@@ -13,72 +13,38 @@ on:
     types: [contentful.deploy]
 
 jobs:
-  lint:
+  common-setup:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout código
         uses: actions/checkout@v3
-
-      - name: Cache dependencies
-        uses: actions/cache@v2
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 18.12.1
 
+      - name: Instalar dependências
+        run: npm install
+
+  lint:
+    runs-on: ubuntu-latest
+    needs: common-setup
+    steps:
       - name: Executar lint
         run: npm run lint
 
   prettier:
     runs-on: ubuntu-latest
-
+    needs: common-setup
     steps:
-      - name: Checkout código
-        uses: actions/checkout@v3
-
-      - name: Cache dependencies
-        uses: actions/cache@v2
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18.12.1
-
       - name: Executar prettier
         run: npm run prettier
 
   jest:
     runs-on: ubuntu-latest
-
+    needs: common-setup
     steps:
-      - name: Checkout código
-        uses: actions/checkout@v3
-
-      - name: Cache dependencies
-        uses: actions/cache@v2
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18.12.1
-
       - name: Executar jest
         run: npm test
 
@@ -89,27 +55,7 @@ jobs:
       - lint
     runs-on: ubuntu-latest
     if: success()
-
     steps:
-      - name: Checkout código
-        uses: actions/checkout@v3
-
-      - name: Cache dependencies
-        uses: actions/cache@v2
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18.12.1
-
-      - name: Instalar dependências
-        run: npm install
-
       - name: Executar build
         run: npm run build
 
