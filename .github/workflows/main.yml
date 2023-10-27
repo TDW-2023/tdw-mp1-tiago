@@ -20,13 +20,18 @@ jobs:
       - name: Checkout código
         uses: actions/checkout@v3
 
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 18.12.1
-
-      - name: Instalar dependências
-        run: npm install
 
       - name: Executar lint
         run: npm run lint
@@ -38,13 +43,18 @@ jobs:
       - name: Checkout código
         uses: actions/checkout@v3
 
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 18.12.1
-
-      - name: Instalar dependências
-        run: npm install
 
       - name: Executar prettier
         run: npm run prettier
@@ -56,13 +66,18 @@ jobs:
       - name: Checkout código
         uses: actions/checkout@v3
 
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 18.12.1
-
-      - name: Instalar dependências
-        run: npm install
 
       - name: Executar jest
         run: npm test
@@ -78,6 +93,14 @@ jobs:
     steps:
       - name: Checkout código
         uses: actions/checkout@v3
+
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
