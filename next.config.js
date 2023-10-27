@@ -5,5 +5,8 @@ module.exports = {
   images: {
     unoptimized: true
   },
+  experimental: {
+    forceSwcTransforms: true,
+  },
   assetPrefix: '/',
 }
