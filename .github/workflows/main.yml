@@ -5,8 +5,7 @@ on:
     branches:
       - main
   push:
-    branches:
-      - main
+    branches: ['**']
   schedule:
     - cron: '0 0 * * *'
   repository_dispatch:
@@ -18,12 +17,12 @@ jobs:
     steps:
       - name: Checkout código
         uses: actions/checkout@v3
-
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 18.12.1
-
+      - name: Set working directory
+        run: cd $GITHUB_WORKSPACE
       - name: Instalar dependências
         run: npm install
 
